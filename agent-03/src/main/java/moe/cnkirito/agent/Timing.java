@@ -35,6 +35,7 @@ public class Timing implements ClassFileTransformer {
             return null;
         }
         try {
+            //针对特定类，moe/cnkirito/agent/Dog
             ClassParser cp = new ClassParser(new java.io.ByteArrayInputStream(
                     classfileBuffer), className + ".java"); 
             JavaClass jclas = cp.parse();
@@ -42,11 +43,13 @@ public class Timing implements ClassFileTransformer {
             Method[] methods = jclas.getMethods();
             int index;
             for (index = 0; index < methods.length; index++) {
+                //针对特定放，进行操作，字节组装
                 if (methods[index].getName().equals(methodName)) {
                     break;
                 }
             }
             if (index < methods.length) {
+                //重新生成字节码
                 addTimer(cgen, methods[index]);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 cgen.getJavaClass().dump(bos);
